@@ -14,29 +14,17 @@ const sliceInputAmount = sortKeys.slice(0, process.argv[3]);
 
 if (sortKeys.length < process.argv[3]) {
   throw new Error('Input is larger than data length');
-}
+};
 
-const highestNumberList = sliceInputAmount.reduce((acc, num) => {
-  if (!parse[num].id) {
+const highestNumberList = sliceInputAmount.map(score => {
+  if (!parse[score].id) {
     throw new Error('invalid json format No JSON object could be decoded THIS IS NOT JSON');
-  }
-  if (acc[num]) {
-    acc[num] = {
-      "score": num,
-      "id": parse[num].id
-    };
-  } else {
-    acc = {
-      ...acc, [num]: {
-        "score": num,
-        "id": parse[num].id
-      }
-    };
   };
 
-  return acc;
-}, {});
+  return {
+    score,
+    "id": parse[score].id
+  };
+});
 
-const removeKey = Object.values(highestNumberList);
-const sortHighest = removeKey.sort((a, b) => b.score - a.score);
-console.log(sortHighest);
+console.log(highestNumberList);
