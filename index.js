@@ -2,10 +2,13 @@ const fs = require('fs');
 
 const data = fs.readFileSync(`./${process.argv[2]}`, 'utf8');
 const addQuotes = data.replace(/(['"])?([a-zA-Z0-9_=]+)(['"])?:/g, '"$2":');
-const addCommas = addQuotes.replace(/\n/g, ",\n")
-const addStartQuoteToNonBracket = addCommas.replace(/:\s(?!{|\d|")/g, ': "')
+const addCommas = addQuotes.replace(/\n/g, ",\n");
+
+const addStartQuoteToNonBracket = addCommas.replace(/:\s(?!{|\d|")/g, ': "');
+
 const addEndQuoteToNonBracket = addStartQuoteToNonBracket.replace(/(?<!}|\d|")(,(?!\s\w))/g, '",');
 const addObjBrackets = "{" + addEndQuoteToNonBracket + "}";
+
 const parse = JSON.parse(addObjBrackets);
 
 const sortKeys = Object.keys(parse).sort((a, b) => b - a);
@@ -21,9 +24,9 @@ const highestNumberList = sliceInputAmount.map(score => {
   };
 
   return {
-    score,
+    "score": parseInt(score),
     "id": parse[score].id
   };
 });
 
-console.log(highestNumberList);
+console.log(JSON.stringify(highestNumberList));
